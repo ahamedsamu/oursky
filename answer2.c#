@@ -1,0 +1,88 @@
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
+
+using System;
+using System.Collections.Generic;
+public class Oursky2
+{
+public class CallCache
+{
+    private int score;
+    private Dictionary<int, CacheNode> cacheMap;
+    private LinkedList<CacheNode> List;
+
+    public CallCache(int score)
+    {
+        this.score = score;
+        cacheMap = new Dictionary<int, CacheNode>();
+        List = new LinkedList<CacheNode>();
+    }
+
+    public int Get(int key)
+    {
+        if (cacheMap.ContainsKey(key))
+        {
+            CacheNode node = cacheMap[key];
+            List.Remove(node);
+            List.AddLast(node);
+            return node.Value;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    public void Put(int key, int value, double weight)
+    {
+        if (cacheMap.ContainsKey(key))
+        {
+            CacheNode node = cacheMap[key];
+            node.Value = value;
+            node.Weight = weight;
+            List.Remove(node);
+            List.AddLast(node);
+        }
+        else
+        {
+            if (cacheMap.Count >= score)
+            {
+                LinkedListNode<CacheNode> nodeToRemove = List.First;
+                List.RemoveFirst();
+                cacheMap.Remove(nodeToRemove.Value.Key);
+            }
+            CacheNode newNode = new CacheNode(key, value, weight);
+            cacheMap[key] = newNode;
+            List.AddLast(newNode);
+        }
+    }
+}
+
+public class CacheNode
+{
+    public int Key { get; private set; }
+    public int Value { get; set; }
+    public double Weight { get; set; }
+
+    public CacheNode(int key, int value, double weight)
+    {
+        Key = key;
+        Value = value;
+        Weight = weight;
+    }
+}
+
+  public static void Main(string[] args)
+    {
+        CallCache cache = new CallCache(2);
+        cache.Put(1, 1, 1.0);
+        cache.Put(2, 2, 2.0);
+        cache.Put(3, 3, 3.0);
+        cache.Put(4, 4, 4.0);
+        Console.WriteLine(cache.Get(1));
+        Console.WriteLine(cache.Get(2));
+        Console.WriteLine(cache.Get(3));
+        Console.WriteLine(cache.Get(4));
+    }
+}
