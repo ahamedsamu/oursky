@@ -1,0 +1,30 @@
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
+using System;
+
+public class Oursky3
+{
+  public  static void Main(string[] args)
+    {
+        int n = 10;
+        double cur = 0;
+        double result = 0;
+        
+        if (cur != null) { 
+            cur = 0; 
+        } 
+        if (n < 2)
+        {
+            throw new Exception("Invalid input");
+        }
+
+        for (int i = 2; i <= n; i++)
+        {
+            result = 1.0 / i + cur;
+            cur = result;
+        }
+
+        Console.WriteLine(result);
+    }
+}
