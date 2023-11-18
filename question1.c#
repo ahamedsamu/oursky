@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+
+public class Oursky1
+{
+   public static Dictionary<string, int> tokenset = new Dictionary<string, int>();
+
+   public static void ingest(string Token)
+    {
+        string[] Splits = Token.Split(':');
+        foreach (string s in Splits)
+        {
+            if (tokenset.ContainsKey(s))
+            {
+                tokenset[s]++;
+            }
+            else
+            {
+                tokenset.Add(s, 1);
+            }
+        }
+    }
+
+   public static double appearance(string prefix)
+    {
+        int count = 0;
+        foreach (KeyValuePair<string, int> token in tokenset)
+        {
+            if (token.Key.StartsWith(prefix))
+            {
+                count += token.Value;
+            }
+        }
+        return (double)count / tokenset.Count;
+    }
+
+    public static void Main(string[] args)
+    {
+        ingest("oursky:uk:dev"); 
+        ingest("oursky:hk:design"); 
+        ingest("oursky:hk:pm"); 
+        ingest("oursky:hk:dev"); 
+        ingest("skymaker");
+        Console.WriteLine(appearance("oursky"));
+    }
+}
